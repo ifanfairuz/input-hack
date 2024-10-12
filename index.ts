@@ -23,7 +23,13 @@ $.fn.extend({
   hack(
     mapping: Record<
       string,
-      number | { key: string; map: number; delay: number }[]
+      | number
+      | ((datas: string[]) => any)
+      | {
+          key: string;
+          map: number | ((datas: string[]) => any);
+          delay: number;
+        }[]
     >,
     events?: {
       pre?: (box: any, input: any) => void;
@@ -46,16 +52,22 @@ $.fn.extend({
             .find(`[name="${key}"]`)
             .val(datas?.[map] ?? "")
             .trigger("change");
+        } else if (typeof map === "function") {
+          box
+            .find(`[name="${key}"]`)
+            .val(map(datas ?? []))
+            .trigger("change");
         } else {
           const jobs = map.map(
             (m) => () =>
               new Promise<void>((res) => {
+                const val =
+                  typeof m.map === "number"
+                    ? datas?.[m.map] ?? ""
+                    : m.map(datas ?? []);
                 setTimeout(() => {
                   try {
-                    box
-                      .find(`[name="${m.key}"]`)
-                      .val(datas?.[m.map] ?? "")
-                      .trigger("change");
+                    box.find(`[name="${m.key}"]`).val(val).trigger("change");
                     res();
                   } catch (error) {
                     console.error(error);
