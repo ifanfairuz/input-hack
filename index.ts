@@ -89,7 +89,7 @@ $.fn.extend({
       events?.post && events.post(box, input);
     });
 
-    box.prepend(input);
+    box.prepend(input, $("<hr>"));
     events?.ready && events.ready(box, input);
   },
   multiHack(
