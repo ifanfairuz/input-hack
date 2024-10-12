@@ -1,8 +1,9 @@
-import $ from "jquery";
+import jQuery from "jquery";
 
 declare global {
   interface Window {
-    hack: typeof $;
+    $: typeof jQuery;
+    hack: typeof jQuery;
   }
 
   interface MultipeHackData {
@@ -10,6 +11,8 @@ declare global {
     current: number;
   }
 }
+
+const $ = window.$ || jQuery;
 
 const setJsonStore = (name: string, data: any) => {
   return window.localStorage.setItem(name, JSON.stringify(data));
