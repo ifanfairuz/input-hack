@@ -2,7 +2,7 @@ import $ from "jquery";
 
 declare global {
   interface Window {
-    $: typeof $;
+    hack: typeof $;
   }
 
   interface MultipeHackData {
@@ -133,4 +133,4 @@ $.fn.extend({
   },
 });
 
-window.$ = $;
+window.hack = $;
