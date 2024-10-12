@@ -116,12 +116,19 @@ $.fn.extend({
       setJsonStore(storage_name, data);
     });
 
-    box.prepend(textarea, currentInput);
+    const btn = $("<button>");
+    btn.html("RUN!");
+    btn.on("click", (e) => {
+      e.preventDefault();
 
-    setTimeout(() => {
       if (callback && data.datas.length > data.current) {
         callback(data.datas[data.current], save(data));
       }
+    });
+    box.prepend(textarea, currentInput, btn, $("<hr>"));
+
+    setTimeout(() => {
+      btn.trigger("click");
     }, 200);
   },
 });
